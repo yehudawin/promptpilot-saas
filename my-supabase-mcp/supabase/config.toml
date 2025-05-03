@@ -1,0 +1,6 @@
+name = "prompt-pilot"
+version = 1
+
+[remote]
+provider = "supabase"
+project_ref = "fsfvxdhwijvfnsfbhyuc"

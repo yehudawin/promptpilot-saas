@@ -1,0 +1,1164 @@
+
+            <html class="">
+              
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+      window.FontAwesomeConfig = {
+          autoReplaceSvg: 'nest', // Options: 'nest', 'remove', 'replace'
+      };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    
+<style>
+  * {
+    font-family: "Inter", sans-serif;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+
+    
+<style>
+  .highlighted-section {
+    outline: 2px solid #3F20FB;
+    background-color: rgba(63, 32, 251, 0.1);
+  }
+
+  .edit-button {
+    position: absolute;
+    z-index: 1000;
+  }
+</style>
+
+    
+<style>
+   :root {
+          /* Base colors */
+          --color-base: #ffffff;
+          --color-base-50: #f9fafb;
+          --color-base-100: #f3f4f6;
+          --color-base-200: #e5e7eb;
+          --color-base-300: #d1d5db;
+          --color-base-400: #9ca3af;
+          --color-base-500: #6b7280;
+          --color-base-600: #4b5563;  
+          --color-base-700: #374151;
+          --color-base-800: #1f2937;  
+          --color-base-900: #111827;
+          --color-base-content: #1f2937;
+
+          /* Primary colors */
+          --color-primary: #3b82f6;
+          --color-primary-50: #eff6ff;
+          --color-primary-100: #dbeafe;
+          --color-primary-200: #bfdbfe;
+          --color-primary-300: #93c5fd;
+          --color-primary-400: #60a5fa;
+          --color-primary-500: #3b82f6;
+          --color-primary-600: #2563eb;
+          --color-primary-700: #1d4ed8;
+          --color-primary-800: #1e40af;
+          --color-primary-900: #1e3a8a;
+          --color-primary-focus: #2563eb;
+          --color-primary-content: #ffffff;
+
+          /* Secondary colors */
+          --color-secondary: #8b5cf6;
+          --color-secondary-50: #f5f3ff;
+          --color-secondary-100: #ede9fe;
+          --color-secondary-200: #ddd6fe;
+          --color-secondary-300: #c4b5fd;
+          --color-secondary-400: #a78bfa;
+          --color-secondary-500: #8b5cf6;
+          --color-secondary-600: #7c3aed;
+          --color-secondary-700: #6d28d9;
+          --color-secondary-800: #5b21b6;
+          --color-secondary-900: #4c1d95;
+          --color-secondary-focus: #7c3aed;
+          --color-secondary-content: #ffffff;
+
+          /* Accent colors */
+          --color-accent: #f472b6;
+          --color-accent-50: #fdf2f8;
+          --color-accent-100: #fce7f3;
+          --color-accent-200: #fbcfe8;
+          --color-accent-300: #f9a8d4;
+          --color-accent-400: #f472b6;
+          --color-accent-500: #ec4899;
+          --color-accent-600: #db2777;
+          --color-accent-700: #be185d;
+          --color-accent-800: #9d174d;
+          --color-accent-900: #831843;
+          --color-accent-focus: #db2777;
+          --color-accent-content: #ffffff;
+
+          /* Neutral colors */
+          --color-neutral: #6b7280;
+          --color-neutral-50: #f9fafb;
+          --color-neutral-100: #f3f4f6;
+          --color-neutral-200: #e5e7eb;
+          --color-neutral-300: #d1d5db;
+          --color-neutral-400: #9ca3af;
+          --color-neutral-500: #6b7280;
+          --color-neutral-600: #4b5563;
+          --color-neutral-700: #374151;
+          --color-neutral-800: #1f2937;
+          --color-neutral-900: #111827;
+          --color-neutral-focus: #4b5563;
+          --color-neutral-content: #ffffff;
+
+          /* Info colors */
+          --color-info: #3b82f6;
+          --color-info-50: #eff6ff;
+          --color-info-100: #dbeafe;
+          --color-info-200: #bfdbfe;
+          --color-info-300: #93c5fd;
+          --color-info-400: #60a5fa;
+          --color-info-500: #3b82f6;
+          --color-info-600: #2563eb;
+          --color-info-700: #1d4ed8;
+          --color-info-800: #1e40af;
+          --color-info-900: #1e3a8a;
+          --color-info-focus: #2563eb;
+          --color-info-content: #ffffff;
+
+          /* Success colors */
+          --color-success: #10b981;
+          --color-success-50: #ecfdf5;
+          --color-success-100: #d1fae5;
+          --color-success-200: #a7f3d0;
+          --color-success-300: #6ee7b7;
+          --color-success-400: #34d399;
+          --color-success-500: #10b981;
+          --color-success-600: #059669;
+          --color-success-700: #047857;
+          --color-success-800: #065f46;
+          --color-success-900: #064e3b;
+          --color-success-focus: #059669;
+          --color-success-content: #ffffff;
+
+          /* Warning colors */
+          --color-warning: #f59e0b;
+          --color-warning-50: #fffbeb;
+          --color-warning-100: #fef3c7;
+          --color-warning-200: #fde68a;
+          --color-warning-300: #fcd34d;
+          --color-warning-400: #fbbf24;
+          --color-warning-500: #f59e0b;
+          --color-warning-600: #d97706;
+          --color-warning-700: #b45309;
+          --color-warning-800: #92400e;
+          --color-warning-900: #78350f;
+          --color-warning-focus: #d97706;
+          --color-warning-content: #ffffff;
+
+          /* Error colors */
+          --color-error: #ef4444;
+          --color-error-50: #fef2f2;
+          --color-error-100: #fee2e2;
+          --color-error-200: #fecaca;
+          --color-error-300: #fca5a5;
+          --color-error-400: #f87171;
+          --color-error-500: #ef4444;
+          --color-error-600: #dc2626;
+          --color-error-700: #b91c1c;
+          --color-error-800: #991b1b;
+          --color-error-900: #7f1d1d;
+          --color-error-focus: #dc2626;
+          --color-error-content: #ffffff;
+        }
+</style>
+
+    
+<style>
+/* Dark theme */
+        .dark {
+          /* Base colors */
+          --color-base: #1f2937;
+          --color-base-50: #111827;
+          --color-base-100: #1f2937;
+          --color-base-200: #374151;
+          --color-base-300: #4b5563;
+          --color-base-400: #6b7280;
+          --color-base-500: #9ca3af;
+          --color-base-600: #d1d5db;
+          --color-base-700: #e5e7eb;
+          --color-base-800: #f3f4f6;
+          --color-base-900: #f9fafb;
+          --color-base-content: #f9fafb;
+
+          /* Primary colors */
+          --color-primary: #60a5fa;
+          --color-primary-50: #1e3a8a;
+          --color-primary-100: #1e40af;
+          --color-primary-200: #1d4ed8;
+          --color-primary-300: #2563eb;
+          --color-primary-400: #3b82f6;
+          --color-primary-500: #60a5fa;
+          --color-primary-600: #93c5fd;
+          --color-primary-700: #bfdbfe;
+          --color-primary-800: #dbeafe;
+          --color-primary-900: #eff6ff;
+          --color-primary-focus: #3b82f6;
+          --color-primary-content: #1f2937;
+
+          /* Secondary colors */
+          --color-secondary: #a78bfa;
+          --color-secondary-50: #4c1d95;
+          --color-secondary-100: #5b21b6;
+          --color-secondary-200: #6d28d9;
+          --color-secondary-300: #7c3aed;
+          --color-secondary-400: #8b5cf6;
+          --color-secondary-500: #a78bfa;
+          --color-secondary-600: #c4b5fd;
+          --color-secondary-700: #ddd6fe;
+          --color-secondary-800: #ede9fe;
+          --color-secondary-900: #f5f3ff;
+          --color-secondary-focus: #8b5cf6;
+          --color-secondary-content: #1f2937;
+
+          /* Accent colors */
+          --color-accent: #f472b6;
+          --color-accent-50: #831843;
+          --color-accent-100: #9d174d;
+          --color-accent-200: #be185d;
+          --color-accent-300: #db2777;
+          --color-accent-400: #ec4899;
+          --color-accent-500: #f472b6;
+          --color-accent-600: #f9a8d4;
+          --color-accent-700: #fbcfe8;
+          --color-accent-800: #fce7f3;
+          --color-accent-900: #fdf2f8;
+          --color-accent-focus: #ec4899;
+          --color-accent-content: #1f2937;
+
+          /* Neutral colors remain the same as light theme */
+
+          /* Info colors */
+          --color-info: #60a5fa;
+          --color-info-50: #1e3a8a;
+          --color-info-100: #1e40af;
+          --color-info-200: #1d4ed8;
+          --color-info-300: #2563eb;
+          --color-info-400: #3b82f6;
+          --color-info-500: #60a5fa;
+          --color-info-600: #93c5fd;
+          --color-info-700: #bfdbfe;
+          --color-info-800: #dbeafe;
+          --color-info-900: #eff6ff;
+          --color-info-focus: #3b82f6;
+          --color-info-content: #1f2937;
+
+          /* Success colors */
+          --color-success: #34d399;
+          --color-success-50: #064e3b;
+          --color-success-100: #065f46;
+          --color-success-200: #047857;
+          --color-success-300: #059669;
+          --color-success-400: #10b981;
+          --color-success-500: #34d399;
+          --color-success-600: #6ee7b7;
+          --color-success-700: #a7f3d0;
+          --color-success-800: #d1fae5;
+          --color-success-900: #ecfdf5;
+          --color-success-focus: #10b981;
+          --color-success-content: #1f2937;
+
+          /* Warning colors */
+          --color-warning: #fbbf24;
+          --color-warning-50: #78350f;
+          --color-warning-100: #92400e;
+          --color-warning-200: #b45309;
+          --color-warning-300: #d97706;
+          --color-warning-400: #f59e0b;
+          --color-warning-500: #fbbf24;
+          --color-warning-600: #fcd34d;
+          --color-warning-700: #fde68a;
+          --color-warning-800: #fef3c7;
+          --color-warning-900: #fffbeb;
+          --color-warning-focus: #f59e0b;
+          --color-warning-content: #1f2937;
+
+          /* Error colors */
+          --color-error: #f87171;
+          --color-error-50: #7f1d1d;
+          --color-error-100: #991b1b;
+          --color-error-200: #b91c1c;
+          --color-error-300: #dc2626;
+          --color-error-400: #ef4444;
+          --color-error-500: #f87171;
+          --color-error-600: #fca5a5;
+          --color-error-700: #fecaca;
+          --color-error-800: #fee2e2;
+          --color-error-900: #fef2f2;
+          --color-error-focus: #ef4444;
+          --color-error-content: #1f2937;
+        }
+</style>
+
+    
+  <script>
+        tailwind.config = {
+            theme: {
+              extend: {
+                colors: {
+                ...{"transparent":"transparent","current":"currentColor","black":"#000000","white":"#ffffff","gray":{"50":"#f9fafb","100":"#f3f4f6","200":"#e5e7eb","300":"#d1d5db","400":"#9ca3af","500":"#6b7280","600":"#4b5563","700":"#374151","800":"#1f2937","900":"#111827"},"red":{"50":"#fef2f2","100":"#fee2e2","200":"#fecaca","300":"#fca5a5","400":"#f87171","500":"#ef4444","600":"#dc2626","700":"#b91c1c","800":"#991b1b","900":"#7f1d1d"},"yellow":{"50":"#fffbeb","100":"#fef3c7","200":"#fde68a","300":"#fcd34d","400":"#fbbf24","500":"#f59e0b","600":"#d97706","700":"#b45309","800":"#92400e","900":"#78350f"},"green":{"50":"#ecfdf5","100":"#d1fae5","200":"#a7f3d0","300":"#6ee7b7","400":"#34d399","500":"#10b981","600":"#059669","700":"#047857","800":"#065f46","900":"#064e3b"},"blue":{"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#1d4ed8","800":"#1e40af","900":"#1e3a8a"},"indigo":{"50":"#eef2ff","100":"#e0e7ff","200":"#c7d2fe","300":"#a5b4fc","400":"#818cf8","500":"#6366f1","600":"#4f46e5","700":"#4338ca","800":"#3730a3","900":"#312e81"},"purple":{"50":"#f5f3ff","100":"#ede9fe","200":"#ddd6fe","300":"#c4b5fd","400":"#a78bfa","500":"#8b5cf6","600":"#7c3aed","700":"#6d28d9","800":"#5b21b6","900":"#4c1d95"},"pink":{"50":"#fdf2f8","100":"#fce7f3","200":"#fbcfe8","300":"#f9a8d4","400":"#f472b6","500":"#ec4899","600":"#db2777","700":"#be185d","800":"#9d174d","900":"#831843"}},
+                ...{"primary":{"50":"var(--color-primary-50)","100":"var(--color-primary-100)","200":"var(--color-primary-200)","300":"var(--color-primary-300)","400":"var(--color-primary-400)","500":"var(--color-primary-500)","600":"var(--color-primary-600)","700":"var(--color-primary-700)","800":"var(--color-primary-800)","900":"var(--color-primary-900)","DEFAULT":"var(--color-primary)","focus":"var(--color-primary-focus)","content":"var(--color-primary-content)"},"secondary":{"50":"var(--color-secondary-50)","100":"var(--color-secondary-100)","200":"var(--color-secondary-200)","300":"var(--color-secondary-300)","400":"var(--color-secondary-400)","500":"var(--color-secondary-500)","600":"var(--color-secondary-600)","700":"var(--color-secondary-700)","800":"var(--color-secondary-800)","900":"var(--color-secondary-900)","DEFAULT":"var(--color-secondary)","focus":"var(--color-secondary-focus)","content":"var(--color-secondary-content)"},"accent":{"50":"var(--color-accent-50)","100":"var(--color-accent-100)","200":"var(--color-accent-200)","300":"var(--color-accent-300)","400":"var(--color-accent-400)","500":"var(--color-accent-500)","600":"var(--color-accent-600)","700":"var(--color-accent-700)","800":"var(--color-accent-800)","900":"var(--color-accent-900)","DEFAULT":"var(--color-accent)","focus":"var(--color-accent-focus)","content":"var(--color-accent-content)"},"neutral":{"50":"var(--color-neutral-50)","100":"var(--color-neutral-100)","200":"var(--color-neutral-200)","300":"var(--color-neutral-300)","400":"var(--color-neutral-400)","500":"var(--color-neutral-500)","600":"var(--color-neutral-600)","700":"var(--color-neutral-700)","800":"var(--color-neutral-800)","900":"var(--color-neutral-900)","DEFAULT":"var(--color-neutral)","focus":"var(--color-neutral-focus)","content":"var(--color-neutral-content)"},"info":{"50":"var(--color-info-50)","100":"var(--color-info-100)","200":"var(--color-info-200)","300":"var(--color-info-300)","400":"var(--color-info-400)","500":"var(--color-info-500)","600":"var(--color-info-600)","700":"var(--color-info-700)","800":"var(--color-info-800)","900":"var(--color-info-900)","DEFAULT":"var(--color-info)","focus":"var(--color-info-focus)","content":"var(--color-info-content)"},"success":{"50":"var(--color-success-50)","100":"var(--color-success-100)","200":"var(--color-success-200)","300":"var(--color-success-300)","400":"var(--color-success-400)","500":"var(--color-success-500)","600":"var(--color-success-600)","700":"var(--color-success-700)","800":"var(--color-success-800)","900":"var(--color-success-900)","DEFAULT":"var(--color-success)","focus":"var(--color-success-focus)","content":"var(--color-success-content)"},"warning":{"50":"var(--color-warning-50)","100":"var(--color-warning-100)","200":"var(--color-warning-200)","300":"var(--color-warning-300)","400":"var(--color-warning-400)","500":"var(--color-warning-500)","600":"var(--color-warning-600)","700":"var(--color-warning-700)","800":"var(--color-warning-800)","900":"var(--color-warning-900)","DEFAULT":"var(--color-warning)","focus":"var(--color-warning-focus)","content":"var(--color-warning-content)"},"error":{"50":"var(--color-error-50)","100":"var(--color-error-100)","200":"var(--color-error-200)","300":"var(--color-error-300)","400":"var(--color-error-400)","500":"var(--color-error-500)","600":"var(--color-error-600)","700":"var(--color-error-700)","800":"var(--color-error-800)","900":"var(--color-error-900)","DEFAULT":"var(--color-error)","focus":"var(--color-error-focus)","content":"var(--color-error-content)"},"danger":{"50":"var(--color-error-50)","100":"var(--color-error-100)","200":"var(--color-error-200)","300":"var(--color-error-300)","400":"var(--color-error-400)","500":"var(--color-error-500)","600":"var(--color-error-600)","700":"var(--color-error-700)","800":"var(--color-error-800)","900":"var(--color-error-900)","DEFAULT":"var(--color-error)","focus":"var(--color-error-focus)","content":"var(--color-error-content)"},"failure":{"50":"var(--color-error-50)","100":"var(--color-error-100)","200":"var(--color-error-200)","300":"var(--color-error-300)","400":"var(--color-error-400)","500":"var(--color-error-500)","600":"var(--color-error-600)","700":"var(--color-error-700)","800":"var(--color-error-800)","900":"var(--color-error-900)","DEFAULT":"var(--color-error)","focus":"var(--color-error-focus)","content":"var(--color-error-content)"}},
+                },
+              },
+            },
+            variants: {
+              extend: {
+                backgroundColor: ['active', 'group-hover'],
+                textColor: ['active', 'group-hover'],
+              },
+            },
+            plugins: [],
+          };
+  </script>
+
+</head>
+
+              <body class="h-full text-base-content">
+                <div id="root" class="min-h-screen bg-neutral-900 flex h-screen">
+    <!-- Sidebar -->
+    <div id="sidebar" class="w-64 border-r border-neutral-800 p-4 hidden md:flex md:flex-col shrink-0">
+        <div class="flex items-center space-x-2 mb-8 shrink-0">
+            <i class="fa-solid fa-robot text-2xl text-white"></i>
+            <span class="text-xl text-white">PromptPilot</span>
+        </div>
+        
+        <button class="new-chat-button w-full px-4 py-2 bg-white text-neutral-900 rounded-lg mb-4 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-plus mr-2"></i> New Chat
+        </button>
+        
+        <!-- Conversation List Area -->
+        <div id="conversation-list" class="space-y-2 overflow-y-auto flex-1">
+            <!-- Conversation items will be loaded here -->
+            <p class="text-neutral-500 text-xs p-2">Loading conversations...</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="flex-1 flex flex-col overflow-hidden">
+        <!-- Chat Header -->
+        <div id="chat-header" class="border-b border-neutral-800 p-4 shrink-0">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button class="md:hidden text-white">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h1 class="text-lg text-white">New Chat</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <img src="https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=123" alt="User" class="w-8 h-8 rounded-full"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-6">
+            <!-- User Message -->
+            <div class="flex justify-end">
+                <div class="bg-neutral-700 rounded-lg p-4 max-w-2xl">
+                    <p class="text-white">Can you help me write a product description for my new SaaS application?</p>
+                </div>
+            </div>
+
+            <!-- System Message - Model Suggestion -->
+            <div class="flex justify-start">
+                <div class="bg-neutral-800 rounded-lg p-4 max-w-2xl">
+                    <p class="text-neutral-400 mb-2">Suggested AI Model:</p>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fa-solid fa-brain text-white"></i>
+                        <span class="text-white">GPT-4</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-white text-neutral-900 rounded-lg">✓ Approve</button>
+                        <button class="px-3 py-1 border border-neutral-700 text-white rounded-lg">Edit</button>
+                        <button class="px-3 py-1 border border-neutral-700 text-white rounded-lg">Try Another</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Message - Prompt Enhancement -->
+            <div class="flex justify-start">
+                <div class="bg-neutral-800 rounded-lg p-4 max-w-2xl">
+                    <p class="text-neutral-400 mb-2">Enhanced Prompt:</p>
+                    <p class="text-white mb-4">Write a compelling product description for a SaaS application, including key features, benefits, target audience, and unique selling points. Please structure the description with clear sections and persuasive language.</p>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-white text-neutral-900 rounded-lg">Use Enhanced</button>
+                        <button class="px-3 py-1 border border-neutral-700 text-white rounded-lg">Edit</button>
+                        <button class="px-3 py-1 border border-neutral-700 text-white rounded-lg">Use Original</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metadata Bar -->
+        <div id="metadata-bar" class="pb-2">
+            <div class="flex items-center justify-between text-sm text-neutral-400">
+                <span><i class="fa-solid fa-info-circle mr-1"></i> Metadata appears here</span>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div id="input-area-container" class="border-t border-neutral-800 p-4 shrink-0">
+            <div id="input-area" class="flex items-center space-x-2">
+                <div class="flex-1 relative">
+                    <textarea id="prompt-textarea" class="w-full bg-neutral-800 text-white rounded-lg pl-4 pr-10 py-3 resize-none focus:outline-none focus:ring-1 focus:ring-blue-500" rows="1" placeholder="Type your message..."></textarea>
+                    <button id="send-button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-white">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ========================================================================
+    // Supabase Client Initialization
+    // ========================================================================
+    let supabase; // Declare supabase variable globally within the script scope
+
+    // Function to initialize Supabase
+    async function initializeSupabase() {
+        console.log("[DEBUG] Entered initializeSupabase function.");
+        try {
+            console.log("[DEBUG] Attempting to fetch /api/config...");
+            const response = await fetch('/api/config');
+            console.log(`[DEBUG] Fetch response status: ${response.status}`);
+            if (!response.ok) {
+                 console.error(`[DEBUG] Fetch failed with status: ${response.status}`);
+                throw new Error(`Failed to fetch config: ${response.status} ${response.statusText}`);
+            }
+            console.log("[DEBUG] Fetch response OK, attempting response.json()...");
+            const config = await response.json();
+            console.log("[DEBUG] Config received from API:", config);
+
+            if (config.supabase_url && config.supabase_anon_key) {
+                 console.log("[DEBUG] Config contains URL and Key. Waiting for supabase global...");
+                 
+                 // --- Wait for Supabase global object --- 
+                 let attempts = 0;
+                 const maxAttempts = 10; // Wait up to ~1 second (10 * 100ms)
+                 while (typeof window.supabase === 'undefined' && attempts < maxAttempts) {
+                     console.log(`[DEBUG] Waiting for window.supabase... Attempt ${attempts + 1}`);
+                     await new Promise(resolve => setTimeout(resolve, 100)); // Wait 100ms
+                     attempts++;
+                 }
+                 
+                 if (typeof window.supabase === 'undefined' || typeof window.supabase.createClient !== 'function') {
+                     console.error(`[DEBUG] Supabase JS library (window.supabase) not found or invalid after ${attempts} attempts.`);
+                     throw new Error("Supabase JS library not available or failed to load in time.");
+                 } 
+                 
+                 // --- Supabase object found, proceed with initialization ---
+                 console.log("[DEBUG] window.supabase found. Calling createClient..."); 
+                 const { createClient } = window.supabase; 
+                 // Initialize the client and assign it to the script's scoped 'supabase' variable
+                 supabase = createClient(config.supabase_url, config.supabase_anon_key);
+                    
+                 console.log("Supabase client initialized successfully."); // SUCCESS
+                 return true; // Indicate success
+
+            } else {
+                console.error("[DEBUG] Supabase URL or Anon Key missing in fetched config.", config);
+                 throw new Error("Invalid configuration received from server.");
+            }
+        } catch (error) {
+            console.error("[DEBUG] Error caught during Supabase client initialization:", error);
+            supabase = undefined; // Ensure supabase is undefined on error
+             // Display error to user in the conversation list area
+             const convoList = document.getElementById('conversation-list');
+             if(convoList) convoList.innerHTML = '<p class="text-red-500 text-xs p-2">Error: Could not connect to database.</p>';
+            return false; // Indicate failure
+        }
+    }
+
+
+    // ========================================================================
+    // DOM Element References
+    // ========================================================================
+    const chatMessagesDiv = document.getElementById('chat-messages');
+    const promptTextarea = document.getElementById('prompt-textarea');
+    const sendButton = document.getElementById('send-button');
+    const metadataBar = document.getElementById('metadata-bar');
+    const newChatButton = document.querySelector('#sidebar button.new-chat-button');
+    const conversationListDiv = document.getElementById('conversation-list');
+    const chatHeaderTitle = document.querySelector('#chat-header h1');
+
+    // ========================================================================
+    // Global State Variables
+    // ========================================================================
+    let currentAIResponseElement = null;
+    let currentAIContentElement = null;
+    let eventSource = null;
+    let currentConversationId = null; // Tracks the currently active conversation
+
+    // ========================================================================
+    // Core Functions
+    // ========================================================================
+
+    /**
+     * Closes the current EventSource connection if it exists.
+     * Re-enables input fields.
+     */
+    function closeEventSource() {
+        if (eventSource) {
+            eventSource.close();
+            eventSource = null;
+            console.log("EventSource closed.");
+        }
+        // Re-enable input after closing or error
+        if (promptTextarea) promptTextarea.disabled = false;
+        if (sendButton) sendButton.disabled = false;
+        if (promptTextarea) promptTextarea.focus();
+        currentAIResponseElement = null;
+        currentAIContentElement = null;
+    }
+
+    /**
+     * Resets the chat interface to its initial state for a new chat.
+     */
+    function resetChatState() {
+        console.log("Resetting chat state...");
+        closeEventSource();
+        currentConversationId = null;
+        sessionStorage.removeItem('currentChatConversationId'); // Clear stored ID
+        if (chatMessagesDiv) chatMessagesDiv.innerHTML = ''; // Clear messages display
+        if (chatHeaderTitle) chatHeaderTitle.textContent = 'New Chat'; // Reset header
+        showSystemMessage("Start a new conversation or select one from the list.");
+        updateMetadataBar(null); // Clear metadata bar
+        if (promptTextarea) promptTextarea.value = '';
+        if (promptTextarea) promptTextarea.disabled = false;
+        if (sendButton) sendButton.disabled = false;
+        // Remove selection highlight from sidebar
+        document.querySelectorAll('#conversation-list > div.conversation-item').forEach(el => el.classList.remove('bg-neutral-800'));
+    }
+
+    /**
+     * Fetches conversations from Supabase and populates the sidebar.
+     */
+    async function loadConversations() {
+        if (!conversationListDiv || typeof supabase === 'undefined') {
+             console.warn("Conversation list element or Supabase client not available.");
+            if(conversationListDiv) conversationListDiv.innerHTML = '<p class="text-neutral-500 text-xs p-2">Cannot load chats.</p>';
+             return;
+        }
+
+        console.log("Loading conversations...");
+        conversationListDiv.innerHTML = '<p class="text-neutral-500 text-xs p-2">Loading conversations...</p>'; // Loading indicator
+
+        try {
+            const { data, error } = await supabase
+                .from('conversations')
+                .select('id, title, created_at')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error("Error loading conversations:", error);
+                conversationListDiv.innerHTML = `<p class="text-red-400 text-xs p-2">Error loading chats: ${error.message}</p>`;
+                return;
+            }
+
+            conversationListDiv.innerHTML = ''; // Clear loading indicator/previous list
+            if (data && data.length > 0) {
+                data.forEach(convo => {
+                    const convoDiv = document.createElement('div');
+                    // Add a specific class for easier selection
+                    convoDiv.classList.add('p-2', 'text-neutral-400', 'hover:bg-neutral-800', 'rounded-lg', 'cursor-pointer', 'text-sm', 'truncate', 'conversation-item');
+                    convoDiv.dataset.id = convo.id; // Store ID for click handling
+
+                    // Display title or a formatted date
+                    const displayTitle = convo.title ? convo.title : `Chat from ${new Date(convo.created_at).toLocaleString()}`;
+                    convoDiv.textContent = displayTitle;
+
+                    // Add click listener directly here (simpler than delegation if list isn't huge)
+                    convoDiv.addEventListener('click', () => {
+                         if (convo.id !== currentConversationId) { // Only load if different
+                            console.log(`Conversation item clicked: ${convo.id}`);
+                            document.querySelectorAll('#conversation-list > div.conversation-item').forEach(el => el.classList.remove('bg-neutral-800'));
+                            convoDiv.classList.add('bg-neutral-800');
+                            loadChatHistory(convo.id);
+                        }
+                    });
+
+                    conversationListDiv.appendChild(convoDiv);
+                });
+                // Highlight the current conversation if it exists in the list
+                if (currentConversationId) {
+                     const activeConvoEl = conversationListDiv.querySelector(`div[data-id='${currentConversationId}']`);
+                     if (activeConvoEl) activeConvoEl.classList.add('bg-neutral-800');
+                 }
+            } else {
+                conversationListDiv.innerHTML = '<p class="text-neutral-500 text-xs p-2">No past conversations found.</p>';
+            }
+        } catch (err) {
+            console.error("Unexpected error in loadConversations:", err);
+            conversationListDiv.innerHTML = '<p class="text-red-400 text-xs p-2">Error loading chats.</p>';
+        }
+    }
+
+    /**
+     * Loads and displays messages for a specific conversation ID.
+     * @param {string} conversationId - The UUID of the conversation to load.
+     */
+    async function loadChatHistory(conversationId) {
+        if (!chatMessagesDiv || typeof supabase === 'undefined') {
+            console.warn("Chat messages element or Supabase client not available.");
+             return;
+        }
+        if (!conversationId) {
+            console.warn("loadChatHistory called with no conversationId.");
+            resetChatState(); // Go to a clean state if no ID provided
+            return;
+        }
+
+
+        console.log(`Loading history for conversation: ${conversationId}`);
+        chatMessagesDiv.innerHTML = ''; // Clear existing messages first
+        const loadingMsg = showSystemMessage('Loading messages...');
+        closeEventSource(); // Ensure no active stream interferes
+        currentConversationId = conversationId; // Set as the active conversation
+        sessionStorage.setItem('currentChatConversationId', currentConversationId); // Store for potential refresh
+
+        try {
+            const { data: messages, error } = await supabase
+                .from('messages')
+                .select('role, content, created_at')
+                .eq('conversation_id', conversationId)
+                .order('created_at', { ascending: true });
+
+            if (loadingMsg) loadingMsg.remove(); // Remove loading indicator
+
+            if (error) {
+                console.error("Error loading messages:", error);
+                showSystemMessage(`Error loading messages: ${error.message}`, 'error');
+                return;
+            }
+
+            chatMessagesDiv.innerHTML = ''; // Clear loading/previous messages again just in case
+            if (messages && messages.length > 0) {
+                messages.forEach(msg => {
+                    // Pass role and content, don't pass metadata for historical messages
+                    addMessageToChat(msg.role, msg.content, {}, false);
+                });
+                // Scroll to the bottom after loading all messages
+                setTimeout(() => chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight, 0);
+            } else {
+                showSystemMessage('No messages in this conversation yet. Send one below!');
+            }
+
+            // Update header and metadata bar to reflect the loaded conversation
+            const selectedConvoDiv = conversationListDiv.querySelector(`div[data-id='${conversationId}']`);
+             if (chatHeaderTitle) {
+                 chatHeaderTitle.textContent = selectedConvoDiv ? selectedConvoDiv.textContent : 'Chat';
+             }
+            updateMetadataBar({ conversation_id: conversationId });
+            if (promptTextarea) {
+                promptTextarea.disabled = false;
+                promptTextarea.focus();
+            }
+             if (sendButton) sendButton.disabled = false;
+
+        } catch (err) {
+            console.error("Unexpected error in loadChatHistory:", err);
+            if (loadingMsg) loadingMsg.remove();
+            showSystemMessage(`Error loading messages.`, 'error');
+        }
+    }
+
+     /**
+      * Loads the initial state: conversations list and potentially the last active chat.
+      * This function now depends on initializeSupabase completing successfully.
+      */
+     async function loadInitialState() {
+         console.log("Loading initial state...");
+         // Initialize Supabase first
+         const supabaseReady = await initializeSupabase();
+
+         if (!supabaseReady) {
+             console.error("Supabase initialization failed. Cannot load initial state.");
+             // The error message should already be displayed by initializeSupabase
+             // Optionally disable input fields etc.
+             if(promptTextarea) promptTextarea.disabled = true;
+             if(sendButton) sendButton.disabled = true;
+             if(newChatButton) newChatButton.disabled = true;
+             return; // Stop execution if Supabase isn't ready
+         }
+
+         // Supabase is ready, proceed with loading conversations and state
+         console.log("Supabase ready, proceeding to load conversations and session state.");
+         const storedConversationId = sessionStorage.getItem('currentChatConversationId');
+
+         try {
+             await loadConversations(); // Wait for conversations to load
+
+             if (storedConversationId) {
+                 console.log("Restoring conversation ID from session storage:", storedConversationId);
+                 const convoElement = conversationListDiv.querySelector(`div[data-id='${storedConversationId}']`);
+                 if (convoElement) {
+                     // Highlight and load history
+                     document.querySelectorAll('#conversation-list > div.conversation-item').forEach(el => el.classList.remove('bg-neutral-800'));
+                     convoElement.classList.add('bg-neutral-800');
+                     await loadChatHistory(storedConversationId); // Wait for history to load
+                 } else {
+                     console.warn("Stored conversation ID not found in list, starting new chat.");
+                     resetChatState(); // Reset if stored ID is invalid/deleted
+                 }
+             } else {
+                 // No stored ID, just show the list and welcome message
+                 console.log("No stored conversation ID found, initializing new chat state.");
+                 resetChatState();
+             }
+         } catch (error) {
+              console.error("Error during initial state loading after Supabase init:", error);
+              showSystemMessage("Failed to load chat state.", "error");
+              resetChatState(); // Attempt to reset to a stable state
+         }
+     }
+
+
+    // ========================================================================
+    // Message Formatting and Display Functions
+    // ========================================================================
+
+    /**
+     * Formats text with basic Markdown support (code blocks, inline code, bold, italic, line breaks).
+     * @param {string} text - The text to format.
+     * @returns {string} - HTML formatted string.
+     */
+    function formatMarkdown(text) {
+        if (typeof text !== 'string') return ''; // Handle non-string input gracefully
+        let formatted = text.replace(/</g, "&lt;").replace(/>/g, "&gt;"); // Escape HTML first
+
+        // Code blocks (```lang\n code ``` or ```\n code ```)
+        const codeBlockRegex = /```(\w*)\n?([\s\S]*?)```/g;
+        formatted = formatted.replace(codeBlockRegex, (match, lang, code) => {
+            const languageClass = lang ? `language-${lang}` : '';
+            const escapedCode = code.replace(/</g, "&lt;").replace(/>/g, "&gt;"); // Escape inside code block
+            return `<pre class="my-2"><code class="${languageClass} p-3 block rounded bg-neutral-700 text-sm font-mono overflow-x-auto">${escapedCode.trim()}</code></pre>`;
+        });
+
+        // Inline code (`code`)
+        formatted = formatted.replace(/`([^`\n]+?)`/g, (match, code) => {
+             const escapedCode = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+             return `<code class="bg-neutral-700 px-1 py-0.5 rounded text-sm font-mono">${escapedCode}</code>`;
+         });
+
+        // Bold (**text**)
+        formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        // Italic (*text* or _text_)
+        formatted = formatted.replace(/(?<!\*)\*(?!\*)(.*?)(?<!\*)\*(?!\*)|(?<!_)_(?!_)(.*?)(?<!_)_(?!_)/g, '<em>$1$2</em>'); // Handle both * and _ for italic, avoid **
+
+        // Line breaks (\n) outside <pre> tags
+        const parts = formatted.split(/(<pre>.*?<\/pre>)/s); // Split by <pre> blocks
+        for (let i = 0; i < parts.length; i++) {
+            if (i % 2 === 0) { // Process only parts outside <pre> blocks
+                parts[i] = parts[i].replace(/\r\n|\n|\r/g, '<br>');
+            }
+        }
+        formatted = parts.join('');
+
+        return formatted;
+    }
+
+
+    /**
+     * Adds a message bubble to the chat interface.
+     * @param {string} sender - 'user' or 'ai'.
+     * @param {string} messageContent - The text content of the message.
+     * @param {object} metadata - Metadata object (used for AI message headers).
+     * @param {boolean} streamChunk - True if this is a streaming chunk for an AI message.
+     */
+    function addMessageToChat(sender, messageContent, metadata = {}, streamChunk = false) {
+        if (!chatMessagesDiv) return;
+
+        if (sender === 'user') {
+             const messageDiv = document.createElement('div');
+             messageDiv.classList.add('flex', 'justify-end', 'mb-4');
+             const bubbleDiv = document.createElement('div');
+             bubbleDiv.classList.add('bg-blue-600', 'text-white', 'rounded-lg', 'p-3', 'max-w-xl', 'lg:max-w-2xl', 'break-words');
+              const p = document.createElement('p');
+              // Basic escaping for user messages
+              p.innerHTML = messageContent.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>");
+             bubbleDiv.appendChild(p);
+             messageDiv.appendChild(bubbleDiv);
+             chatMessagesDiv.appendChild(messageDiv);
+             currentAIResponseElement = null; // Reset AI element tracking when user sends
+             currentAIContentElement = null;
+         } else if (sender === 'ai') {
+             if (!streamChunk || !currentAIResponseElement) {
+                 // --- Create a new AI message bubble ---
+                 const messageDiv = document.createElement('div');
+                 messageDiv.classList.add('flex', 'justify-start', 'mb-4', 'ai-message-container');
+                 const bubbleDiv = document.createElement('div');
+                 bubbleDiv.classList.add('bg-neutral-800', 'text-white', 'rounded-lg', 'p-3', 'max-w-xl', 'lg:max-w-2xl', 'w-full', 'break-words');
+
+                 let headerContent = '';
+                 // Only add header if metadata is provided (typically for the first chunk of a streamed response)
+                 if (Object.keys(metadata).length > 0 && metadata.selected_model) {
+                     let reasonText = metadata.reason ? `(${metadata.reason})` : '';
+                     // Escape potential HTML in model name/reason just in case
+                     const safeModel = String(metadata.selected_model).replace(/</g, "&lt;");
+                     const safeReason = String(reasonText).replace(/</g, "&lt;");
+                     headerContent = `<p class="text-neutral-400 text-xs mb-2 font-medium">🧠 ${safeModel} ${safeReason}</p>`;
+                 }
+
+                 const contentDiv = document.createElement('div');
+                 contentDiv.classList.add('ai-content', 'text-sm', 'leading-relaxed');
+                 contentDiv.style.whiteSpace = 'pre-wrap';
+                 // Apply markdown formatting to the initial content (might be empty or full message)
+                 contentDiv.innerHTML = formatMarkdown(messageContent);
+
+                 bubbleDiv.innerHTML = headerContent; // Set header first
+                 bubbleDiv.appendChild(contentDiv);   // Then append content div
+                 messageDiv.appendChild(bubbleDiv);
+                 chatMessagesDiv.appendChild(messageDiv);
+
+                 currentAIResponseElement = messageDiv; // Store the container for future chunks
+                 currentAIContentElement = contentDiv;  // Store the specific content div
+             } else if (currentAIContentElement) {
+                 // --- Append chunk to existing AI message bubble ---
+                 const textNode = document.createTextNode(messageContent);
+                 currentAIContentElement.appendChild(textNode);
+
+                 // DEBUG LOGS:
+                 console.log(`[APPEND_DEBUG] Appended chunk: "${messageContent}"`);
+                 console.log(`[APPEND_DEBUG] currentAIContentElement.childNodes count:`, currentAIContentElement.childNodes.length);
+                 // Log the last few child nodes for inspection
+                 const lastChildren = Array.from(currentAIContentElement.childNodes).slice(-5);
+                 console.log(`[APPEND_DEBUG] Last childNodes:`, lastChildren.map(n => ({ type: n.nodeType, value: n.nodeValue })));
+                 console.log(`[APPEND_DEBUG] currentAIContentElement.textContent length:`, currentAIContentElement.textContent.length);
+                 // console.log(`[APPEND_DEBUG] currentAIContentElement.innerHTML:`, currentAIContentElement.innerHTML); // Can be very long, maybe omit
+ 
+                 // Ensure scroll to bottom if user is near the bottom
+                 const isScrolledToBottom = chatMessagesDiv.scrollHeight - chatMessagesDiv.clientHeight <= chatMessagesDiv.scrollTop + 100;
+                 if (isScrolledToBottom) {
+                     chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+                 }
+             }
+         }
+    }
+
+
+    /**
+     * Displays a system message (e.g., loading, error, welcome) in the chat.
+     * @param {string} message - The message text.
+     * @param {string} type - 'info', 'error', 'warning'.
+     */
+    function showSystemMessage(message, type = 'info') {
+        if (!chatMessagesDiv) return;
+        // Remove previous system messages to avoid clutter
+        const existingMessages = chatMessagesDiv.querySelectorAll('.system-message');
+        existingMessages.forEach(msg => msg.remove());
+
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('flex', 'justify-center', 'system-message', 'mb-4'); // Added mb-4
+        const textDiv = document.createElement('div');
+        textDiv.classList.add('text-xs', 'px-3', 'py-1', 'rounded-full', 'my-2', 'max-w-md', 'text-center', 'shadow');
+        if (type === 'error') {
+            textDiv.classList.add('bg-red-200', 'text-red-800'); // Light background for dark theme
+        } else if (type === 'warning') {
+            textDiv.classList.add('bg-yellow-200', 'text-yellow-800'); // Light background
+        } else { // info or welcome
+            textDiv.classList.add('bg-neutral-700', 'text-neutral-300');
+        }
+        textDiv.textContent = message;
+        messageDiv.appendChild(textDiv);
+        chatMessagesDiv.appendChild(messageDiv);
+        chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+        return messageDiv; // Return the element if needed (e.g., for removing loading msg)
+    }
+
+
+    /**
+     * Updates the metadata bar at the bottom.
+     * @param {object | null} data - Metadata object or null to clear.
+     */
+     function updateMetadataBar(data) {
+         if (!metadataBar) return;
+
+         if (!data || Object.keys(data).length === 0) {
+             metadataBar.innerHTML = '<div class="flex items-center justify-center text-xs text-neutral-500 h-6">No active session</div>'; // Added height
+             return;
+         }
+
+         let metadataHtml = '<div class="flex items-center justify-between text-xs text-neutral-400 h-6">'; // Added height
+         let items = [];
+         if (data.selected_model) {
+              const safeModel = String(data.selected_model).replace(/</g, "&lt;");
+             items.push(`<span><i class="fa-solid fa-brain mr-1"></i> ${safeModel}</span>`);
+         }
+         if (data.conversation_id) {
+              const safeId = String(data.conversation_id).replace(/</g, "&lt;");
+              items.push(`<span><i class="fa-regular fa-comments mr-1"></i> ${safeId.substring(0, 8)}...</span>`);
+         }
+         // Add more placeholders if needed
+         // items.push(`<span><i class="fa-regular fa-clock mr-1"></i> N/A</span>`);
+
+         if (items.length === 0) {
+              metadataHtml += '<span class="text-neutral-500 italic">Processing...</span>';
+         } else {
+              metadataHtml += items.join('<span class="mx-2 text-neutral-600">|</span>'); // Separator
+         }
+         metadataHtml += '</div>';
+         metadataBar.innerHTML = metadataHtml;
+     }
+
+
+    // ========================================================================
+    // Main Function to Handle Sending Prompt and SSE
+    // ========================================================================
+    async function handleSendPromptStreaming() {
+        if (!promptTextarea || !sendButton) return; // Guard against missing elements
+        const prompt = promptTextarea.value.trim();
+        if (!prompt || sendButton.disabled) return;
+
+        closeEventSource(); // Close any previous connection
+
+        addMessageToChat('user', prompt); // Display user message immediately
+
+        promptTextarea.value = ''; // Clear input
+        promptTextarea.style.height = 'auto'; // Reset height
+        promptTextarea.disabled = true;
+        sendButton.disabled = true;
+        const loadingMessageElement = showSystemMessage('Connecting & Processing...');
+        updateMetadataBar({}); // Clear or show processing state
+
+        currentAIResponseElement = null; // Reset AI elements for new response
+        currentAIContentElement = null;
+
+        // Use the currentConversationId managed by the UI state
+        const conversationIdToSend = currentConversationId;
+        const API_BASE_URL = 'http://localhost:8000'; // Corrected port
+        let apiUrl = `${API_BASE_URL}/api/process_stream?prompt=${encodeURIComponent(prompt)}`;
+        if (conversationIdToSend) {
+            apiUrl += `&conversation_id=${conversationIdToSend}`;
+            console.log(`Sending request for existing conversation: ${conversationIdToSend}`);
+        } else {
+            console.log("Sending request for new conversation.");
+        }
+
+        try {
+            eventSource = new EventSource(apiUrl);
+            let firstChunkReceived = false;
+            let newConversationCreated = !conversationIdToSend; // Flag if we expect a new ID
+
+            eventSource.onopen = function() {
+                console.log("EventSource connection opened.");
+                // No need to remove loading message here, happens on first message/metadata
+            };
+
+            eventSource.addEventListener('metadata', function(event) {
+                console.log("Metadata received:", event.data);
+                try {
+                    const metadata = JSON.parse(event.data);
+
+                     // If this was flagged as a new conversation, store the ID and refresh list
+                     if (newConversationCreated && metadata.conversation_id) {
+                         currentConversationId = metadata.conversation_id;
+                         sessionStorage.setItem('currentChatConversationId', currentConversationId);
+                         console.log("New Conversation ID received and stored:", currentConversationId);
+                         newConversationCreated = false; // Reset flag
+                         // Refresh sidebar and highlight the new conversation
+                         loadConversations();
+                         // Update header immediately (title might be generic initially)
+                         if (chatHeaderTitle) chatHeaderTitle.textContent = metadata.title || `Chat ${metadata.conversation_id.substring(0, 8)}`;
+
+                     } else if (metadata.conversation_id && currentConversationId && metadata.conversation_id !== currentConversationId) {
+                          // This case should ideally not happen if the backend uses the provided ID
+                          console.warn("Server returned a different conversation ID than expected!", metadata.conversation_id, currentConversationId);
+                          // Decide how to handle: update UI to new ID? show error?
+                          // For now, let's update the UI to the ID returned by the server
+                          currentConversationId = metadata.conversation_id;
+                          sessionStorage.setItem('currentChatConversationId', currentConversationId);
+                          loadConversations(); // Refresh list to potentially show the new ID context
+                     }
+
+                     updateMetadataBar(metadata); // Update metadata bar display
+                     // Create the AI message bubble structure with header (content streams later)
+                     addMessageToChat('ai', '', metadata, false);
+
+                     // Remove loading message *after* metadata is processed and bubble created
+                     if (!firstChunkReceived && loadingMessageElement) {
+                         loadingMessageElement.remove();
+                     }
+
+                } catch (e) {
+                    console.error("Failed to parse metadata JSON:", e);
+                    if (loadingMessageElement) loadingMessageElement.remove();
+                    showSystemMessage('Error processing server metadata.', 'error');
+                    closeEventSource();
+                }
+            });
+
+            eventSource.addEventListener('engineered_prompt', function(event) {
+                 console.log("Engineered prompt received:", event.data);
+                 try {
+                     const promptData = JSON.parse(event.data);
+                     if (promptData.engineered_prompt) {
+                         // Display engineered prompt subtly
+                         const userMessages = chatMessagesDiv.querySelectorAll('.flex.justify-end'); // Find user messages
+                         const lastUserMessage = userMessages.length > 0 ? userMessages[userMessages.length - 1] : null;
+
+                         // Remove previous engineered prompt messages if any
+                         chatMessagesDiv.querySelectorAll('.engineered-prompt-display').forEach(el => el.remove());
+
+                         const promptDiv = document.createElement('div');
+                         promptDiv.classList.add('flex', 'justify-start', 'ml-8', '-mt-2', 'mb-4', 'engineered-prompt-display'); // Added class for removal
+                         const textDiv = document.createElement('div');
+                         textDiv.classList.add('text-xs', 'text-neutral-500', 'bg-neutral-800', 'px-2', 'py-1', 'rounded-md', 'max-w-lg', 'italic', 'border', 'border-neutral-700'); // Slightly more visible
+                         textDiv.textContent = `Using prompt: ${promptData.engineered_prompt}`;
+                         promptDiv.appendChild(textDiv);
+
+                         // Insert after the last user message, before the AI response bubble (if it exists)
+                          if (lastUserMessage) {
+                              // Insert after the user message div
+                              lastUserMessage.parentNode.insertBefore(promptDiv, lastUserMessage.nextSibling);
+                          } else {
+                             chatMessagesDiv.appendChild(promptDiv); // Fallback if no user message found (unlikely)
+                          }
+                     }
+                 } catch (e) {
+                     console.error("Failed to parse engineered_prompt JSON:", e);
+                 }
+             });
+
+            eventSource.addEventListener('warning', function(event) {
+                 console.log("Warning received:", event.data);
+                 try {
+                     const warningData = JSON.parse(event.data);
+                     showSystemMessage(warningData.message, 'warning'); // Show warning to user
+                 } catch (e) {
+                     console.error("Failed to parse warning JSON:", e);
+                 }
+             });
+
+            eventSource.addEventListener('message', function(event) {
+                console.log("[BROWSER_SSE_MSG_RAW] Raw event data:", event.data); // DEBUG: Log raw data
+                // Remove loading message on first actual message chunk
+                 if (!firstChunkReceived && loadingMessageElement) {
+                     loadingMessageElement.remove();
+                     firstChunkReceived = true;
+                 }
+                 try {
+                     console.log("[BROWSER_SSE_MSG_PARSE] Attempting JSON.parse..."); // DEBUG: Log before parse
+                     const messageData = JSON.parse(event.data);
+                     console.log("[BROWSER_SSE_MSG_PARSE_SUCCESS] Parsed data:", messageData); // DEBUG: Log parsed data
+                     if (messageData.text !== undefined) {
+                          addMessageToChat('ai', messageData.text, {}, true); // Append stream chunk
+                     } else {
+                          console.warn("[BROWSER_SSE_MSG_WARN] Received message event without 'text' property:", messageData);
+                     }
+                 } catch (e) {
+                     console.error("[BROWSER_SSE_MSG_PARSE_ERROR] Failed to parse message JSON:", e); // DEBUG: Log parsing error
+                     console.error("[BROWSER_SSE_MSG_PARSE_ERROR] Raw data that failed:", event.data); // DEBUG: Log raw data on error
+                     // Append raw data as a fallback if parsing fails
+                     addMessageToChat('ai', `[Raw/Invalid Chunk: ${event.data}]`, {}, true); 
+                 }
+            });
+
+            eventSource.addEventListener('end', function(event) {
+                console.log("Stream ended by server.");
+                 if (loadingMessageElement) loadingMessageElement.remove(); // Ensure loading removed
+                closeEventSource(); // Close connection and re-enable input
+                // Maybe apply syntax highlighting if relevant?
+                // if (currentAIContentElement) {
+                //     // Example: Apply highlighting if code blocks exist
+                //     currentAIContentElement.querySelectorAll('pre code').forEach((block) => {
+                //         // Use a library like highlight.js if needed
+                //         // hljs.highlightElement(block);
+                //     });
+                // }
+            });
+
+            eventSource.onerror = function(error) {
+                console.error("EventSource failed:", error);
+                if (loadingMessageElement) loadingMessageElement.remove();
+
+                let errorMsg = 'Connection error or server unavailable.';
+                // Attempt to get more specific error from server if possible
+                // Note: The 'error' object here might not have standard properties like 'data'
+                 if (error && error.message) { // Standard error message
+                    errorMsg = `Connection Error: ${error.message}`;
+                 } else if (eventSource && eventSource.readyState === EventSource.CLOSED) {
+                      // If closed state is detected, might be less severe (e.g., server closed connection after error)
+                      errorMsg = 'Connection closed by server or network issue.';
+                      console.log('EventSource connection is closed.');
+                 } else {
+                      // Generic fallback
+                      console.log('Unknown EventSource error state:', error);
+                 }
+
+                showSystemMessage(errorMsg, 'error');
+                closeEventSource(); // Cleanup and re-enable input is crucial on error
+            };
+        } catch (err) {
+             console.error("Error initiating EventSource:", err);
+              if (loadingMessageElement) loadingMessageElement.remove();
+              showSystemMessage(`Failed to connect to server: ${err.message}`, 'error');
+              closeEventSource(); // Ensure cleanup
+        }
+    }
+
+    // ========================================================================
+    // Event Listeners Setup
+    // ========================================================================
+    if (sendButton) {
+        sendButton.addEventListener('click', handleSendPromptStreaming);
+    }
+    if (promptTextarea) {
+        promptTextarea.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                handleSendPromptStreaming();
+            }
+            // Auto-resize textarea height
+            setTimeout(() => {
+                 if (promptTextarea.scrollHeight > promptTextarea.clientHeight) {
+                    promptTextarea.style.height = 'auto'; // Reset height to recalculate
+                    const maxHeight = 200; // Max height in pixels
+                    promptTextarea.style.height = Math.min(promptTextarea.scrollHeight, maxHeight) + 'px';
+                }
+            }, 0);
+        });
+         // Initial resize on load
+         setTimeout(() => {
+              if (promptTextarea.value) { // If there's pre-filled text
+                 promptTextarea.dispatchEvent(new Event('keydown')); // Trigger resize logic
+              }
+         }, 100);
+    }
+
+    // New Chat Button Listener
+    if (newChatButton) {
+        newChatButton.addEventListener('click', (event) => {
+            event.preventDefault(); // Good practice
+            console.log("New Chat button clicked.");
+            resetChatState();
+        });
+    } else {
+        console.warn("Could not find the 'New Chat' button.");
+    }
+
+    // Conversation List Click Listener (now handled within loadConversations)
+
+
+    // DOMContentLoaded Listener to load initial state
+    document.addEventListener('DOMContentLoaded', loadInitialState);
+
+</script>
+
+</body>
+</html>
