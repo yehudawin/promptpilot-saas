@@ -1,5 +1,4 @@
-
-            <html class="">
+<html class="">
               
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -431,59 +430,59 @@
     let supabase; // Declare supabase variable globally within the script scope
 
     // Function to initialize Supabase
-    async function initializeSupabase() {
-        console.log("[DEBUG] Entered initializeSupabase function.");
-        try {
-            console.log("[DEBUG] Attempting to fetch /api/config...");
-            const response = await fetch('/api/config');
-            console.log(`[DEBUG] Fetch response status: ${response.status}`);
-            if (!response.ok) {
-                 console.error(`[DEBUG] Fetch failed with status: ${response.status}`);
-                throw new Error(`Failed to fetch config: ${response.status} ${response.statusText}`);
-            }
-            console.log("[DEBUG] Fetch response OK, attempting response.json()...");
-            const config = await response.json();
-            console.log("[DEBUG] Config received from API:", config);
-
-            if (config.supabase_url && config.supabase_anon_key) {
-                 console.log("[DEBUG] Config contains URL and Key. Waiting for supabase global...");
-                 
-                 // --- Wait for Supabase global object --- 
-                 let attempts = 0;
-                 const maxAttempts = 10; // Wait up to ~1 second (10 * 100ms)
-                 while (typeof window.supabase === 'undefined' && attempts < maxAttempts) {
-                     console.log(`[DEBUG] Waiting for window.supabase... Attempt ${attempts + 1}`);
-                     await new Promise(resolve => setTimeout(resolve, 100)); // Wait 100ms
-                     attempts++;
-                 }
-                 
-                 if (typeof window.supabase === 'undefined' || typeof window.supabase.createClient !== 'function') {
-                     console.error(`[DEBUG] Supabase JS library (window.supabase) not found or invalid after ${attempts} attempts.`);
-                     throw new Error("Supabase JS library not available or failed to load in time.");
-                 } 
-                 
-                 // --- Supabase object found, proceed with initialization ---
-                 console.log("[DEBUG] window.supabase found. Calling createClient..."); 
-                 const { createClient } = window.supabase; 
-                 // Initialize the client and assign it to the script's scoped 'supabase' variable
-                 supabase = createClient(config.supabase_url, config.supabase_anon_key);
-                    
-                 console.log("Supabase client initialized successfully."); // SUCCESS
-                 return true; // Indicate success
-
-            } else {
-                console.error("[DEBUG] Supabase URL or Anon Key missing in fetched config.", config);
-                 throw new Error("Invalid configuration received from server.");
-            }
-        } catch (error) {
-            console.error("[DEBUG] Error caught during Supabase client initialization:", error);
-            supabase = undefined; // Ensure supabase is undefined on error
-             // Display error to user in the conversation list area
-             const convoList = document.getElementById('conversation-list');
-             if(convoList) convoList.innerHTML = '<p class="text-red-500 text-xs p-2">Error: Could not connect to database.</p>';
-            return false; // Indicate failure
-        }
-    }
+    // async function initializeSupabase() {
+    //     console.log("[DEBUG] Entered initializeSupabase function.");
+    //     try {
+    //         console.log("[DEBUG] Attempting to fetch /api/config...");
+    //         const response = await fetch('/api/config');
+    //         console.log(`[DEBUG] Fetch response status: ${response.status}`);
+    //         if (!response.ok) {
+    //              console.error(`[DEBUG] Fetch failed with status: ${response.status}`);
+    //             throw new Error(`Failed to fetch config: ${response.status} ${response.statusText}`);
+    //         }
+    //         console.log("[DEBUG] Fetch response OK, attempting response.json()...");
+    //         const config = await response.json();
+    //         console.log("[DEBUG] Config received from API:", config);
+    //
+    //         if (config.supabase_url && config.supabase_anon_key) {
+    //              console.log("[DEBUG] Config contains URL and Key. Waiting for supabase global...");
+    //
+    //              // --- Wait for Supabase global object ---
+    //              let attempts = 0;
+    //              const maxAttempts = 10; // Wait up to ~1 second (10 * 100ms)
+    //              while (typeof window.supabase === 'undefined' && attempts < maxAttempts) {
+    //                  console.log(`[DEBUG] Waiting for window.supabase... Attempt ${attempts + 1}`);
+    //                  await new Promise(resolve => setTimeout(resolve, 100)); // Wait 100ms
+    //                  attempts++;
+    //              }
+    //
+    //              if (typeof window.supabase === 'undefined' || typeof window.supabase.createClient !== 'function') {
+    //                  console.error(`[DEBUG] Supabase JS library (window.supabase) not found or invalid after ${attempts} attempts.`);
+    //                  throw new Error("Supabase JS library not available or failed to load in time.");
+    //              }
+    //
+    //              // --- Supabase object found, proceed with initialization ---
+    //              console.log("[DEBUG] window.supabase found. Calling createClient...");
+    //              const { createClient } = window.supabase;
+    //              // Initialize the client and assign it to the script's scoped 'supabase' variable
+    //              supabase = createClient(config.supabase_url, config.supabase_anon_key);
+    //
+    //              console.log("Supabase client initialized successfully."); // SUCCESS
+    //              return true; // Indicate success
+    //
+    //         } else {
+    //             console.error("[DEBUG] Supabase URL or Anon Key missing in fetched config.", config);
+    //              throw new Error("Invalid configuration received from server.");
+    //         }
+    //     } catch (error) {
+    //         console.error("[DEBUG] Error caught during Supabase client initialization:", error);
+    //         supabase = undefined; // Ensure supabase is undefined on error
+    //          // Display error to user in the conversation list area
+    //          const convoList = document.getElementById('conversation-list');
+    //          if(convoList) convoList.innerHTML = '<p class="text-red-500 text-xs p-2">Error: Could not connect to database.</p>';
+    //         return false; // Indicate failure
+    //     }
+    // }
 
 
     // ========================================================================
@@ -830,18 +829,17 @@
                  currentAIContentElement = contentDiv;  // Store the specific content div
              } else if (currentAIContentElement) {
                  // --- Append chunk to existing AI message bubble ---
+                 const lastChild = currentAIContentElement.lastChild;
+
+                 // Ensure a space is added if the last child is text and doesn't end with a space
+                 if (lastChild && lastChild.nodeType === Node.TEXT_NODE && !lastChild.textContent.endsWith(' ')) {
+                     lastChild.textContent += ' ';
+                 }
+
+                 // Append the new chunk
                  const textNode = document.createTextNode(messageContent);
                  currentAIContentElement.appendChild(textNode);
 
-                 // DEBUG LOGS:
-                 console.log(`[APPEND_DEBUG] Appended chunk: "${messageContent}"`);
-                 console.log(`[APPEND_DEBUG] currentAIContentElement.childNodes count:`, currentAIContentElement.childNodes.length);
-                 // Log the last few child nodes for inspection
-                 const lastChildren = Array.from(currentAIContentElement.childNodes).slice(-5);
-                 console.log(`[APPEND_DEBUG] Last childNodes:`, lastChildren.map(n => ({ type: n.nodeType, value: n.nodeValue })));
-                 console.log(`[APPEND_DEBUG] currentAIContentElement.textContent length:`, currentAIContentElement.textContent.length);
-                 // console.log(`[APPEND_DEBUG] currentAIContentElement.innerHTML:`, currentAIContentElement.innerHTML); // Can be very long, maybe omit
- 
                  // Ensure scroll to bottom if user is near the bottom
                  const isScrolledToBottom = chatMessagesDiv.scrollHeight - chatMessagesDiv.clientHeight <= chatMessagesDiv.scrollTop + 100;
                  if (isScrolledToBottom) {
@@ -941,7 +939,7 @@
 
         // Use the currentConversationId managed by the UI state
         const conversationIdToSend = currentConversationId;
-        const API_BASE_URL = 'http://localhost:8000'; // Corrected port
+        const API_BASE_URL = 'http://localhost:8001'; // Corrected port
         let apiUrl = `${API_BASE_URL}/api/process_stream?prompt=${encodeURIComponent(prompt)}`;
         if (conversationIdToSend) {
             apiUrl += `&conversation_id=${conversationIdToSend}`;
@@ -1064,45 +1062,34 @@
                  } catch (e) {
                      console.error("[BROWSER_SSE_MSG_PARSE_ERROR] Failed to parse message JSON:", e); // DEBUG: Log parsing error
                      console.error("[BROWSER_SSE_MSG_PARSE_ERROR] Raw data that failed:", event.data); // DEBUG: Log raw data on error
-                     // Append raw data as a fallback if parsing fails
-                     addMessageToChat('ai', `[Raw/Invalid Chunk: ${event.data}]`, {}, true); 
+
+                     // Filter out invalid chunks and only append valid ones
+                     const validChunk = event.data.match(/^[a-zA-Z0-9\s.,!?'"-]+$/); // Regex to allow valid characters
+                     if (validChunk) {
+                         addMessageToChat('ai', validChunk[0], {}, true);
+                     } else {
+                         console.warn("[BROWSER_SSE_MSG_FILTER] Ignored invalid chunk:", event.data);
+                     }
                  }
             });
 
             eventSource.addEventListener('end', function(event) {
                 console.log("Stream ended by server.");
-                 if (loadingMessageElement) loadingMessageElement.remove(); // Ensure loading removed
+                if (loadingMessageElement) loadingMessageElement.remove(); // Ensure loading message is removed
                 closeEventSource(); // Close connection and re-enable input
-                // Maybe apply syntax highlighting if relevant?
-                // if (currentAIContentElement) {
-                //     // Example: Apply highlighting if code blocks exist
-                //     currentAIContentElement.querySelectorAll('pre code').forEach((block) => {
-                //         // Use a library like highlight.js if needed
-                //         // hljs.highlightElement(block);
-                //     });
-                // }
+                showSystemMessage('Stream completed successfully.', 'info'); // Optional success message
             });
 
+            // Modify the onerror handler to suppress errors after normal closure
             eventSource.onerror = function(error) {
-                console.error("EventSource failed:", error);
+                console.error("EventSource encountered an error:", error);
+                if (eventSource.readyState === EventSource.CLOSED) {
+                    console.log("EventSource connection closed normally.");
+                    return; // Do not treat normal closure as an error
+                }
                 if (loadingMessageElement) loadingMessageElement.remove();
-
-                let errorMsg = 'Connection error or server unavailable.';
-                // Attempt to get more specific error from server if possible
-                // Note: The 'error' object here might not have standard properties like 'data'
-                 if (error && error.message) { // Standard error message
-                    errorMsg = `Connection Error: ${error.message}`;
-                 } else if (eventSource && eventSource.readyState === EventSource.CLOSED) {
-                      // If closed state is detected, might be less severe (e.g., server closed connection after error)
-                      errorMsg = 'Connection closed by server or network issue.';
-                      console.log('EventSource connection is closed.');
-                 } else {
-                      // Generic fallback
-                      console.log('Unknown EventSource error state:', error);
-                 }
-
-                showSystemMessage(errorMsg, 'error');
-                closeEventSource(); // Cleanup and re-enable input is crucial on error
+                // showSystemMessage('Connection error or server unavailable.', 'error');
+                closeEventSource(); // Cleanup and re-enable input
             };
         } catch (err) {
              console.error("Error initiating EventSource:", err);

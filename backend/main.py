@@ -11,6 +11,7 @@ import asyncio
 from uuid import UUID, uuid4
 from typing import Optional, List, Dict
 import time # Add time import
+from fastapi.middleware.cors import CORSMiddleware  # Import CORS middleware
 
 # ייבוא הלוגיקה מהמודול הנפרד
 from logic import (
@@ -24,6 +25,15 @@ from config import supabase_client, SUPABASE_URL, SUPABASE_ANON_KEY # Import key
 
 # הגדרת אפליקציית FastAPI
 app = FastAPI()
+
+# Add CORS middleware to allow requests from the frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Replace "*" with specific origins in production
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 
 # --- Default User Setup (Simplified) ---
 DEFAULT_USER_ID: Optional[UUID] = None
@@ -301,58 +311,66 @@ async def stream_generator(user_prompt: str, user_id: UUID, conversation_id: UUI
         except Exception as context_update_e:
             print(f"Failed to update context with error details: {context_update_e}")
 
+text = """
+Large Language Models (LLMs) are important because they enable machines to understand and generate human-like language, making them powerful tools for a wide range of applications. From customer support chatbots and virtual assistants to automated content creation and language translation, LLMs provide the foundational intelligence to interact with humans in natural language. Their ability to comprehend context, infer meaning, and produce coherent, relevant responses has revolutionized human-computer interaction, allowing for more intuitive and accessible software systems.
+
+Beyond communication, LLMs are key drivers of innovation in knowledge-intensive domains. They can retrieve, summarize, and reason over vast amounts of unstructured data, making them essential in fields like medicine, law, education, and research. In enterprise environments, LLMs are powering RAG (Retrieval-Augmented Generation) systems, improving decision-making, compliance monitoring, and productivity through intelligent automation. As these models continue to evolve, their importance will only grow, reshaping how information is accessed, interpreted, and acted upon across industries.
+"""
+async def mock_event_data():
+    words = text.split()
+    for i in range(0, len(words) - 1, 2):
+        await asyncio.sleep(1)
+        yield f"data: {words[i]} {words[i+1]}\n\n"
+    yield "data: End of stream\n\n"
+
+
 # Modify the endpoint to accept conversation_id and handle creation
 @app.get("/api/process_stream")
 async def process_prompt_stream_endpoint(
     prompt: str = Query(...),
     conversation_id: Optional[str] = Query(None) # Make conversation_id optional
 ):
-    print(">>> process_prompt_stream_endpoint ENTERED") # Add entry log
-    user_prompt = prompt
-    if not user_prompt:
-        return JSONResponse(status_code=400, content={"error": "Prompt cannot be empty"})
+    return StreamingResponse(mock_event_data(), media_type="text/event-stream")
+    # print(">>> process_prompt_stream_endpoint ENTERED") # Add entry log
+    # user_prompt = prompt
+    # if not user_prompt:
+    #     return JSONResponse(status_code=400, content={"error": "Prompt cannot be empty"})
+    #
+    # if DEFAULT_USER_ID is None:
+    #      print("Error: Default user ID not available.")
+    #      # Return JSONResponse instead of raising HTTPException for client handling
+    #      return JSONResponse(status_code=503, content={"error": "Service unavailable: User initialization failed."})
+    #
+    # current_user_id = DEFAULT_USER_ID # Use the global default user ID
+    # current_conversation_id: Optional[UUID] = None
+    #
+    # if conversation_id:
+    #     try:
+    #         current_conversation_id = UUID(conversation_id)
+    #         # Optional: Verify conversation belongs to user if implementing multi-user
+    #         # convo_details = await get_conversation_details(current_conversation_id) # Needs implementation
+    #         # if not convo_details or convo_details['user_id'] != current_user_id:
+    #         #     return JSONResponse(status_code=403, content={"error": "Conversation access denied"})
+    #         print(f"Using existing conversation ID: {current_conversation_id}")
+    #     except ValueError:
+    #         return JSONResponse(status_code=400, content={"error": "Invalid conversation_id format"})
+    # else:
+    #     # Create a new conversation
+    #     print("No conversation_id provided, creating a new one...")
+    #     # Generate a default title from the first few words of the prompt
+    #     default_title = user_prompt[:DEFAULT_TITLE_LENGTH] + ('...' if len(user_prompt) > DEFAULT_TITLE_LENGTH else '')
+    #     new_convo_id = await create_conversation(user_id=current_user_id, title=default_title)
+    #     if not new_convo_id:
+    #         # Handle creation failure
+    #         print("Error: Failed to create new conversation in database.")
+    #         return JSONResponse(status_code=500, content={"error": "Failed to create new conversation"})
+    #     current_conversation_id = new_convo_id
+    #     print(f"Created new conversation with ID: {current_conversation_id}")
 
-    if DEFAULT_USER_ID is None:
-         print("Error: Default user ID not available.")
-         # Return JSONResponse instead of raising HTTPException for client handling
-         return JSONResponse(status_code=503, content={"error": "Service unavailable: User initialization failed."})
-
-    current_user_id = DEFAULT_USER_ID # Use the global default user ID
-    current_conversation_id: Optional[UUID] = None
-
-    if conversation_id:
-        try:
-            current_conversation_id = UUID(conversation_id)
-            # Optional: Verify conversation belongs to user if implementing multi-user
-            # convo_details = await get_conversation_details(current_conversation_id) # Needs implementation
-            # if not convo_details or convo_details['user_id'] != current_user_id:
-            #     return JSONResponse(status_code=403, content={"error": "Conversation access denied"})
-            print(f"Using existing conversation ID: {current_conversation_id}")
-        except ValueError:
-            return JSONResponse(status_code=400, content={"error": "Invalid conversation_id format"})
-    else:
-        # Create a new conversation
-        print("No conversation_id provided, creating a new one...")
-        # Generate a default title from the first few words of the prompt
-        default_title = user_prompt[:DEFAULT_TITLE_LENGTH] + ('...' if len(user_prompt) > DEFAULT_TITLE_LENGTH else '')
-        new_convo_id = await create_conversation(user_id=current_user_id, title=default_title)
-        if not new_convo_id:
-            # Handle creation failure
-            print("Error: Failed to create new conversation in database.")
-            return JSONResponse(status_code=500, content={"error": "Failed to create new conversation"})
-        current_conversation_id = new_convo_id
-        print(f"Created new conversation with ID: {current_conversation_id}")
-
-    # Final check if we have a conversation ID
-    if not current_conversation_id:
-         print("Error: Failed to obtain a conversation ID.")
-         return 
-    JSONResponse(status_code=500, content={"error": "Failed to obtain conversation ID"})
-
-    return StreamingResponse(
-        stream_generator(user_prompt=user_prompt, user_id=current_user_id, conversation_id=current_conversation_id),
-        media_type="text/event-stream"
-    )
+async def call_ai_model(prompt, model_choice):
+    response  = ["This is a simulated", " streaming", " response from the AI model."]
+    for chunk in response:
+        yield chunk
 
 # --- Endpoint ישן (ללא סטרימינג) - נשאיר אותו בינתיים כגיבוי או לדיבאגינג ---
 @app.post("/api/process")
