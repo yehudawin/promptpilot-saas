@@ -441,23 +441,25 @@ async def serve_html_page(page_name: str):
 # ניתוב עבור דף הבית ('/') שיפנה ל-Landing Page
 @app.get("/", response_class=HTMLResponse)
 async def serve_root_page(): # שינוי שם הפונקציה למניעת התנגשות
-    # נגיש את Landing_Page.HTML
-    landing_page_path = os.path.join(BASE_DIR, "Landing_Page.HTML")
-    if not os.path.isfile(landing_page_path):
-        # אולי זה Landing_Page.html? נבדוק
-        landing_page_path_lower = os.path.join(BASE_DIR, "Landing_Page.html")
-        if os.path.isfile(landing_page_path_lower):
-            landing_page_path = landing_page_path_lower
+    # נגיש את Chat_page.html כדף הבית
+    chat_page_path = os.path.join(BASE_DIR, "Chat_page.html")
+    if not os.path.isfile(chat_page_path):
+        # במקרה חירום, ננסה לחפש את Landing_Page.HTML אם Chat_page.html לא נמצא
+        # אבל זה לא אמור לקרות אם הקבצים הועתקו כראוי
+        fallback_page_path = os.path.join(BASE_DIR, "Landing_Page.HTML")
+        if os.path.isfile(fallback_page_path):
+            chat_page_path = fallback_page_path
+            print("Warning: Chat_page.html not found, serving Landing_Page.HTML as fallback for root.")
         else:
-            raise HTTPException(status_code=404, detail="Landing page file (Landing_Page.HTML or Landing_Page.html) not found.")
+            raise HTTPException(status_code=404, detail="Chat_page.html (and fallback Landing_Page.HTML) not found.")
 
     try:
-        with open(landing_page_path, "r", encoding="utf-8") as f:
+        with open(chat_page_path, "r", encoding="utf-8") as f:
             content = f.read()
         return HTMLResponse(content=content)
     except Exception as e:
-        print(f"Error reading landing page file {landing_page_path}: {e}")
-        raise HTTPException(status_code=500, detail="Error reading landing page file")
+        print(f"Error reading root page file {chat_page_path}: {e}")
+        raise HTTPException(status_code=500, detail="Error reading root page file")
 
 
 # הרצת השרת (רק אם הקובץ מורץ ישירות)
