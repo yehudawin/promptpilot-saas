@@ -7,7 +7,7 @@ import asyncio
 from uuid import UUID, uuid4
 
 # ייבוא מפתחות API ומשתנים מהקונפיגורציה
-from config import CLAUDE_API_KEY, DEEPSEEK_API_KEY, supabase_client
+from backend.config import CLAUDE_API_KEY, DEEPSEEK_API_KEY, supabase_client
 
 # הגדרת משתנים גלובליים למודלים (נוכל לשפר את זה בהמשך, אולי דרך config)
 # הערה: כרגע ערכים אלה קבועים. הפונקציה check_available_models לא הועברה כי היא תלויה ב-logger של הבוט
