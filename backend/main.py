@@ -13,14 +13,14 @@ from typing import Optional, List, Dict
 import time # Add time import
 
 # ייבוא הלוגיקה מהמודול הנפרד
-from logic import (
+from backend.logic import (
     route_prompt, engineer_prompt, call_ai_model_stream, get_model_description,
     create_user, get_user_by_auth_id, get_or_create_user_profile_context, update_user_profile_context,
     create_conversation, get_conversation_context, update_conversation_context,
     add_message, get_messages
 )
 # Import supabase client to check initialization
-from config import supabase_client, SUPABASE_URL, SUPABASE_ANON_KEY # Import keys too
+from backend.config import supabase_client, SUPABASE_URL, SUPABASE_ANON_KEY # Import keys too
 
 # הגדרת אפליקציית FastAPI
 app = FastAPI()
