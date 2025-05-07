@@ -348,8 +348,19 @@
 
     <!-- Main Content -->
     <div id="main-content" class="flex-1 flex flex-col overflow-hidden">
+        <!-- Mobile Header -->
+        <header id="mobile-header" class="md:hidden fixed top-0 left-0 right-0 bg-neutral-900/95 border-b border-neutral-800 p-4 z-20">
+            <div class="flex justify-between items-center">
+                <button id="hamburger-button" class="p-2 text-white">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <span id="mobile-chat-title" class="text-white">New Chat</span>
+                <button class="p-2 text-white"> <i class="fa-solid fa-ellipsis"></i> </button>
+            </div>
+        </header>
+
         <!-- Chat Header -->
-        <div id="chat-header" class="border-b border-neutral-800 p-4 shrink-0">
+        <div id="chat-header" class="border-b border-neutral-800 p-4 shrink-0 hidden md:flex">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                     <button class="md:hidden text-white">
@@ -364,7 +375,7 @@
         </div>
 
         <!-- Chat Messages -->
-        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-6">
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-6 md:pt-4 md:pb-4 pt-20 pb-28">
             <!-- User Message -->
             <div class="flex justify-end">
                 <div class="bg-neutral-700 rounded-lg p-4 max-w-2xl">
@@ -403,21 +414,23 @@
         </div>
 
         <!-- Metadata Bar -->
-        <div id="metadata-bar" class="pb-2">
+        <div id="metadata-bar" class="pb-2 hidden md:block">
             <div class="flex items-center justify-between text-sm text-neutral-400">
                 <span><i class="fa-solid fa-info-circle mr-1"></i> Metadata appears here</span>
             </div>
         </div>
 
         <!-- Input Area -->
-        <div id="input-area-container" class="border-t border-neutral-800 p-4 shrink-0">
-            <div id="input-area" class="flex items-center space-x-2">
-                <div class="flex-1 relative">
-                    <textarea id="prompt-textarea" class="w-full bg-neutral-800 text-white rounded-lg pl-4 pr-10 py-3 resize-none focus:outline-none focus:ring-1 focus:ring-blue-500" rows="1" placeholder="Type your message..."></textarea>
-                    <button id="send-button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-white">
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </button>
-                </div>
+        <div id="input-area-container" class="border-t border-neutral-800 p-4 shrink-0 md:static fixed bottom-0 left-0 right-0 bg-neutral-900 w-full z-10">
+            <div class="flex items-center gap-2">
+                <textarea id="prompt-textarea" class="w-full bg-neutral-800 text-white rounded-xl p-3 resize-none focus:outline-none focus:ring-1 focus:ring-blue-500" rows="1" placeholder="Type your message..."></textarea>
+                <button id="send-button" class="p-3 bg-blue-600 hover:bg-blue-700 rounded-xl text-white">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="flex justify-between items-center mt-2 px-2 md:hidden">
+                <span id="mobile-model-info" class="text-neutral-400 text-xs">Model: N/A</span>
+                <span id="mobile-tokens-info" class="text-neutral-400 text-xs"></span> <!-- Placeholder for tokens if needed -->
             </div>
         </div>
     </div>
@@ -495,6 +508,9 @@
     const newChatButton = document.querySelector('#sidebar button.new-chat-button');
     const conversationListDiv = document.getElementById('conversation-list');
     const chatHeaderTitle = document.querySelector('#chat-header h1');
+    const mobileChatTitleElement = document.getElementById('mobile-chat-title'); // New element for mobile header title
+    const hamburgerButton = document.getElementById('hamburger-button'); // New hamburger button
+    const sidebar = document.getElementById('sidebar'); // Existing sidebar
 
     // ========================================================================
     // Global State Variables
@@ -536,6 +552,7 @@
         sessionStorage.removeItem('currentChatConversationId'); // Clear stored ID
         if (chatMessagesDiv) chatMessagesDiv.innerHTML = ''; // Clear messages display
         if (chatHeaderTitle) chatHeaderTitle.textContent = 'New Chat'; // Reset header
+        if (mobileChatTitleElement) mobileChatTitleElement.textContent = 'New Chat'; // Reset mobile header
         showSystemMessage("Start a new conversation or select one from the list.");
         updateMetadataBar(null); // Clear metadata bar
         if (promptTextarea) promptTextarea.value = '';
@@ -662,6 +679,9 @@
             const selectedConvoDiv = conversationListDiv.querySelector(`div[data-id='${conversationId}']`);
              if (chatHeaderTitle) {
                  chatHeaderTitle.textContent = selectedConvoDiv ? selectedConvoDiv.textContent : 'Chat';
+             }
+             if (mobileChatTitleElement) { // Update mobile header too
+                 mobileChatTitleElement.textContent = selectedConvoDiv ? selectedConvoDiv.textContent : 'Chat';
              }
             updateMetadataBar({ conversation_id: conversationId });
             if (promptTextarea) {
@@ -886,13 +906,17 @@
      * @param {object | null} data - Metadata object or null to clear.
      */
      function updateMetadataBar(data) {
-         if (!metadataBar) return;
+         if (!metadataBar) return; // This is the desktop metadata bar
+
+         const mobileModelInfo = document.getElementById('mobile-model-info');
 
          if (!data || Object.keys(data).length === 0) {
              metadataBar.innerHTML = '<div class="flex items-center justify-center text-xs text-neutral-500 h-6">No active session</div>'; // Added height
+             if (mobileModelInfo) mobileModelInfo.textContent = 'Model: N/A';
              return;
          }
 
+         // Desktop metadata bar update
          let metadataHtml = '<div class="flex items-center justify-between text-xs text-neutral-400 h-6">'; // Added height
          let items = [];
          if (data.selected_model) {
@@ -913,6 +937,18 @@
          }
          metadataHtml += '</div>';
          metadataBar.innerHTML = metadataHtml;
+
+         // Mobile metadata bar update
+         if (mobileModelInfo) {
+            if (data.selected_model) {
+                const safeModel = String(data.selected_model).replace(/</g, "&lt;");
+                mobileModelInfo.textContent = `Model: ${safeModel}`;
+            } else if (data.conversation_id) { // Fallback if no model but there's a convo
+                mobileModelInfo.textContent = 'Model: Active';
+            } else {
+                mobileModelInfo.textContent = 'Model: N/A';
+            }
+        }
      }
 
 
@@ -971,9 +1007,13 @@
                          console.log("New Conversation ID received and stored:", currentConversationId);
                          newConversationCreated = false; // Reset flag
                          // Refresh sidebar and highlight the new conversation
-                         loadConversations();
-                         // Update header immediately (title might be generic initially)
-                         if (chatHeaderTitle) chatHeaderTitle.textContent = metadata.title || `Chat ${metadata.conversation_id.substring(0, 8)}`;
+                         loadConversations().then(() => {
+                             // Update header immediately (title might be generic initially)
+                             const newConvoEl = conversationListDiv.querySelector(`div[data-id='${currentConversationId}']`);
+                             const titleToSet = metadata.title || (newConvoEl ? newConvoEl.textContent : `Chat ${currentConversationId.substring(0,8)}`);
+                             if (chatHeaderTitle) chatHeaderTitle.textContent = titleToSet;
+                             if (mobileChatTitleElement) mobileChatTitleElement.textContent = titleToSet;
+                         });
 
                      } else if (metadata.conversation_id && currentConversationId && metadata.conversation_id !== currentConversationId) {
                           // This case should ideally not happen if the backend uses the provided ID
@@ -1146,6 +1186,11 @@
             event.preventDefault(); // Good practice
             console.log("New Chat button clicked.");
             resetChatState();
+            if (sidebar && sidebar.classList.contains('fixed')) { // If mobile sidebar is open
+                sidebar.classList.add('hidden'); // Close it
+                sidebar.classList.remove('fixed', 'top-0', 'left-0', 'h-full', 'z-40', 'bg-neutral-900', 'w-64', 'p-4', 'border-r', 'border-neutral-800');
+
+            }
         });
     } else {
         console.warn("Could not find the 'New Chat' button.");
@@ -1153,6 +1198,29 @@
 
     // Conversation List Click Listener (now handled within loadConversations)
 
+    // Hamburger Menu Listener
+    if (hamburgerButton && sidebar) {
+        hamburgerButton.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+            // Make sidebar appear over content on mobile
+            if (!sidebar.classList.contains('hidden')) {
+                sidebar.classList.add('fixed', 'top-0', 'left-0', 'h-full', 'z-30', 'bg-neutral-900', 'w-64', 'p-4', 'border-r', 'border-neutral-800');
+                // sidebar.classList.remove('md:flex'); // Keep md:flex for desktop
+            } else {
+                sidebar.classList.remove('fixed', 'top-0', 'left-0', 'h-full', 'z-30', 'bg-neutral-900', 'w-64', 'p-4', 'border-r', 'border-neutral-800');
+            }
+        });
+
+        // Add click listener to conversation items to close mobile sidebar
+        conversationListDiv.addEventListener('click', (event) => {
+            if (event.target.closest('.conversation-item')) {
+                if (sidebar.classList.contains('fixed') && !sidebar.classList.contains('hidden')) { // If mobile sidebar is open
+                    sidebar.classList.add('hidden');
+                    sidebar.classList.remove('fixed', 'top-0', 'left-0', 'h-full', 'z-30', 'bg-neutral-900', 'w-64', 'p-4', 'border-r', 'border-neutral-800');
+                }
+            }
+        });
+    }
 
     // DOMContentLoaded Listener to load initial state
     document.addEventListener('DOMContentLoaded', loadInitialState);
